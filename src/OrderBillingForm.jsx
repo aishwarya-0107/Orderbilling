@@ -72,100 +72,111 @@ const OrderBillingForm = ({ isDarkMode }) => {
   return (
     <>
       <form
-        className={`max-w-4xl mx-auto p-8 shadow-lg rounded-lg ${
-          isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
-        }`}
-        onSubmit={handleSubmit}
-      >
-        <h2
-          className={`text-2xl font-bold mb-6 text-center ${
-            isDarkMode ? "text-yellow-400" : "text-gray-800"
+  className={`max-w-4xl mx-auto p-8 shadow-lg rounded-lg ${
+    isDarkMode ? "bg-gray-900 text-teal-100" : "bg-purple-50 text-gray-900"
+  }`}
+  onSubmit={handleSubmit}
+>
+  <h2
+    className={`text-2xl font-bold mb-6 text-center ${
+      isDarkMode ? "text-teal-300" : "text-purple-600"
+    }`}
+  >
+    Order Billing
+  </h2>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {[
+      { label: "Email", name: "email", type: "email", required: true },
+      { label: "First Name", name: "firstName", type: "text", required: true },
+      { label: "Last Name", name: "lastName", type: "text", required: true },
+      { label: "Full Name", name: "fullName", type: "text", readOnly: true },
+      { label: "Status", name: "status", type: "text", readOnly: true },
+      { label: "Tracking ID", name: "tracking", type: "text", readOnly: true },
+      { label: "Address", name: "address", required: true },
+      { label: "Address 2", name: "address2" },
+      { label: "City", name: "city", required: true },
+      { label: "State", name: "state", required: true },
+      { label: "Zip Code", name: "zip", required: true },
+      { label: "County", name: "county", required: true },
+    ].map((field, idx) => (
+      <div key={idx}>
+        <label
+          className={`block text-sm font-medium mb-1 ${
+            isDarkMode ? "text-teal-200" : "text-purple-800"
           }`}
         >
-          Order Billing
-        </h2>
+          {field.label} {field.required && "*"}
+        </label>
+        <input
+          type={field.type}
+          name={field.name}
+          value={formData[field.name]}
+          onChange={handleChange}
+          readOnly={field.readOnly || false}
+          className={`w-full p-3 rounded-md border ${
+            errors[field.name]
+              ? "border-red-500"
+              : isDarkMode
+              ? "border-teal-500"
+              : "border-purple-300"
+          }`}
+          style={{
+            backgroundColor: isDarkMode ? "#1a202c" : "#faf5ff",
+            color: isDarkMode ? "#e2f5f1" : "#322659",
+            cursor: field.readOnly ? "default" : "text",
+          }}
+        />
+        {errors[field.name] && (
+          <p className="text-red-500 text-sm mt-1">{errors[field.name]}</p>
+        )}
+      </div>
+    ))}
+  </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[ 
-            { label: "Email", name: "email", type: "email", required: true },
-            { label: "First Name", name: "firstName", type: "text", required: true },
-            { label: "Last Name", name: "lastName", type: "text", required: true },
-            { label: "Full Name", name: "fullName", type: "text", readOnly: true },
-            { label: "Status", name: "status", type: "text", readOnly: true },
-            { label: "Tracking ID", name: "tracking", type: "text", readOnly: true },
-            { label: "Address", name: "address", required: true },
-            { label: "Address 2", name: "address2" },
-            { label: "City", name: "city", required: true },
-            { label: "State", name: "state", required: true },
-            { label: "Zip Code", name: "zip", required: true },
-            { label: "County", name: "county", required: true },
-          ].map((field, idx) => (
-            <div key={idx}>
-              <label
-                className={`block text-sm font-medium mb-1 ${
-                  isDarkMode ? "text-gray-300" : "text-gray-700"
-                }`}
-              >
-                {field.label} {field.required && "*"}
-              </label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={formData[field.name]}
-                onChange={handleChange}
-                readOnly={field.readOnly || false}
-                className={`w-full p-3 rounded-md border ${
-                  errors[field.name]
-                    ? "border-red-500"
-                    : isDarkMode
-                    ? "border-gray-600"
-                    : "border-gray-300"
-                }`}
-                style={{
-                  backgroundColor: isDarkMode ? "#4a5568" : "white",
-                  color: isDarkMode ? "white" : "black",
-                }}
-              />
-              {errors[field.name] && (
-                <p className="text-red-500 text-sm mt-1">{errors[field.name]}</p>
-              )}
-            </div>
-          ))}
-        </div>
+  <button
+    type="submit"
+    className={`mt-6 w-full py-3 rounded-lg ${
+      isDarkMode
+        ? "bg-teal-600 text-gray-900 hover:bg-teal-500"
+        : "bg-purple-500 text-white hover:bg-purple-600"
+    } transition`}
+  >
+    Submit Order
+  </button>
+</form>
 
-        <button
-          type="submit"
-          className={`mt-6 w-full py-3 rounded-lg ${
-            isDarkMode
-              ? "bg-yellow-400 text-gray-900 hover:bg-yellow-300"
-              : "bg-blue-600 text-white hover:bg-blue-700"
-          } transition`}
-        >
-          Submit Order
-        </button>
-      </form>
+{showModal && (
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70">
+    <div
+      className={`p-6 rounded-lg shadow-lg text-center ${
+        isDarkMode ? "bg-gray-800 text-teal-100" : "bg-purple-50 text-gray-900"
+      }`}
+    >
+      <h2
+        className={`text-2xl font-bold ${
+          isDarkMode ? "text-teal-400" : "text-purple-600"
+        }`}
+      >
+        🎉 Congratulations!
+      </h2>
+      <p className="mt-2">
+        Your order was successfully submitted, {formData.firstName}!
+      </p>
+      <button
+        onClick={handleCloseModal}
+        className={`mt-4 py-2 px-4 rounded-lg ${
+          isDarkMode
+            ? "bg-teal-600 text-gray-900 hover:bg-teal-500"
+            : "bg-purple-500 text-white hover:bg-purple-600"
+        } transition`}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
 
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-bold text-green-500">
-              🎉 Congratulations!
-            </h2>
-            <p className="mt-2 text-gray-700">
-              Your order was successfully submitted.
-            </p>
-            <p className="mt-1 text-gray-500">
-              Thank you, {formData.firstName}!
-            </p>
-            <button
-              onClick={handleCloseModal}
-              className="mt-4 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 };
